@@ -1,8 +1,12 @@
 <template>
   <div class="search-input">
     <input type="text" v-model="searchString" />
-    <div class="search-input__suggestions">
-      <p v-for="suggestion in suggestionList" :key="suggestion.text"> {{ suggestion.text }} </p>
+    <div v-show="suggestionList.length" class="search-input__suggestions">
+      <p
+        v-for="suggestion in suggestionList"
+        :key="suggestion.text"
+        @click="selectSuggestion(suggestion)"
+        class="search-input__suggestion-item"> {{ suggestion.text }} </p>
     </div>
   </div>
 </template>
@@ -31,7 +35,14 @@ export default class SearchInput extends Vue {
 
   searchString = '';
 
+  selectedValue = '';
+
   suggestionList: Suggestion[] = [];
+
+  selectSuggestion(suggestion: Suggestion) {
+    this.selectedValue = suggestion.text;
+    this.suggestionList = [];
+  }
 
   @Watch('searchString')
   @Debounce(500)
@@ -43,5 +54,21 @@ export default class SearchInput extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus">
-
+  .search-input
+    position relative
+    width 100%
+    font-size 14px
+    input
+      font-size 14px
+      width 100%
+    &__suggestions
+      position absolute
+      width 100%
+      padding 5px
+      background-color white
+      box-shadow 0 2px 2px rgba(0, 0, 0, 0.2)
+    &__suggestion-item
+      cursor pointer
+      &:hover
+        background-color #eeeeee
 </style>

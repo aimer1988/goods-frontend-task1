@@ -1,6 +1,8 @@
 <template>
   <div id="app">
+    <span>Адрес:</span>
     <search-input :search-function="searchFunctionsList.getAddressSuggestions" />
+    <span>Человек:</span>
     <search-input :search-function="searchFunctionsList.getPersonSuggestions" />
   </div>
 </template>
@@ -28,7 +30,9 @@ export default class App extends Vue {
   font-family Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
-  text-align center
+  width 1024px
   color #2c3e50
-  margin-top 60px
+  margin 0 auto
+  & *
+    box-sizing border-box
 </style>
