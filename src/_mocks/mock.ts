@@ -1,4 +1,4 @@
-interface Address {
+interface AddressListItem {
   country: string;
   city: string;
   street: string;
@@ -6,12 +6,12 @@ interface Address {
   flat: string;
 }
 
-interface Person {
+interface PersonListItem {
   name: string;
   lastName: string;
 }
 
-const addressList: Address[] = [
+const addressList: AddressListItem[] = [
   {
     country: 'Россия',
     city: 'Москва',
@@ -35,7 +35,7 @@ const addressList: Address[] = [
   },
 ];
 
-const personList: Person[] = [
+const personList: PersonListItem[] = [
   {
     name: 'Иван',
     lastName: 'Череззаборногуперекиньдрищев',
@@ -54,12 +54,12 @@ const personList: Person[] = [
   },
 ];
 
-export function addressSearch(searchString: string): Address[] {
+export function addressSearch(searchString: string): AddressListItem[] {
   return addressList
     .filter((a) => `${a.country} ${a.city} ${a.street} ${a.house} ${a.flat}`.toLowerCase().indexOf(searchString.toLowerCase()) > -1);
 }
 
-export function personSearch(searchString: string): Person[] {
+export function personSearch(searchString: string): PersonListItem[] {
   return personList
     .filter((a) => `${a.name} ${a.lastName}`.toLowerCase().indexOf(searchString.toLowerCase()) > -1);
 }

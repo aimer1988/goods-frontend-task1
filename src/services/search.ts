@@ -2,9 +2,10 @@ import { addressSearch, personSearch } from '../_mocks/mock';
 
 export interface Suggestion {
   text: string;
+  value: unknown;
 }
 
-interface AddressListItem {
+export interface Address {
   country: string;
   city: string;
   street: string;
@@ -12,12 +13,12 @@ interface AddressListItem {
   flat: string;
 }
 
-interface PersonListItem {
+export interface Person {
   name: string;
   lastName: string;
 }
 
-function getAddressList(q: string): Promise<AddressListItem[]> {
+function getAddressList(q: string): Promise<Address[]> {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(addressSearch(q));
@@ -25,7 +26,7 @@ function getAddressList(q: string): Promise<AddressListItem[]> {
   });
 }
 
-function getPersonList(q: string): Promise<PersonListItem[]> {
+function getPersonList(q: string): Promise<Person[]> {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(personSearch(q));
@@ -38,14 +39,19 @@ export async function getAddressSuggestions(searchString: string): Promise<Sugge
 
   const addressList = await getAddressList(searchString);
   return addressList
-    .map((a) => ({ text: `${a.country} ${a.city} ${a.street} ${a.house} ${a.flat}` }));
+    .map((a) => ({
+      text: `${a.country} ${a.city} ${a.street} ${a.house} ${a.flat}`,
+      value: a,
+    }));
 }
 
 export async function getPersonSuggestions(searchString: string): Promise<Suggestion[]> {
-  console.log(searchString);
   if (!searchString) return [];
 
   const personList = await getPersonList(searchString);
   return personList
-    .map((a) => ({ text: `${a.name} ${a.lastName}` }));
+    .map((a) => ({
+      text: `${a.name} ${a.lastName}`,
+      value: a,
+    }));
 }

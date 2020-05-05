@@ -1,6 +1,6 @@
 <template>
   <div class="search-input">
-    <input type="text" v-model="searchString" />
+    <input type="text" :value="searchString" @input="onSearchStringInput($event.target.value)" />
     <div v-show="suggestionList.length" class="search-input__suggestions">
       <p
         v-for="suggestion in suggestionList"
@@ -12,12 +12,7 @@
 </template>
 
 <script lang="ts">
-import {
-  Component,
-  Prop,
-  Vue,
-  Watch,
-} from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import debounce from 'lodash-es/debounce';
 import { Suggestion } from '../services/search';
 
@@ -35,18 +30,17 @@ export default class SearchInput extends Vue {
 
   searchString = '';
 
-  selectedValue = '';
-
   suggestionList: Suggestion[] = [];
 
   selectSuggestion(suggestion: Suggestion) {
-    this.selectedValue = suggestion.text;
+    this.searchString = suggestion.text;
     this.suggestionList = [];
+    this.$emit('value-selected', suggestion.value);
   }
 
-  @Watch('searchString')
   @Debounce(500)
-  async onSearchStringChange(newVal: string) {
+  async onSearchStringInput(newVal: string) {
+    this.searchString = newVal;
     this.suggestionList = await this.searchFunction(newVal);
   }
 }
